@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bluedock-app-config
+  labels:
+    app.kubernetes.io/part-of: bluedock
+data:
+  # 与联调一致：application-docker.yml（0.0.0.0 + 容器内依赖主机名）
+  SPRING_PROFILES_ACTIVE: "docker"
+  BLUEDOCK_SEED_ENABLED: "false"
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka.bluedock-infra.svc:9092"
+  BLUEDOCK_UPLOAD_DIR: "/app/data/uploads"
+  BLUEDOCK_LICENSE_PATH: "/app/data/secrets/license.json"
+  BLUEDOCK_SEARCH_ENGINE: "docs"
+  BLUEDOCK_SEARCH_OPENSEARCH_ENABLED: "false"
+  BLUEDOCK_MEETING_ALLOW_DEV_TOKEN: "false"
+  BLUEDOCK_OFFICE_ALLOW_DEV_TOKEN: "false"

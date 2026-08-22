@@ -1,0 +1,15 @@
+package com.bluedock.auth.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AuthJacksonConfig {
+  @Bean
+  @ConditionalOnMissingBean(ObjectMapper.class)
+  ObjectMapper objectMapper() {
+    return new ObjectMapper();
+  }
+}

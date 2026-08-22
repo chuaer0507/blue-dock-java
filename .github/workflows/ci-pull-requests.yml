@@ -1,0 +1,32 @@
+name: 'CI: Pull Requests'
+
+# PR 编排入口：check → 并行 k8s / compose-smoke。
+# 镜像 release 仅在 ci-main（push Tag / 手动）触发。
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check
+    uses: ./.github/workflows/ci-check-reusable.yml
+    with:
+      java-version: '25'
+
+  k8s-manifest:
+    name: K8s
+    needs: check
+    uses: ./.github/workflows/ci-k8s-manifest-reusable.yml
+
+  compose-smoke:
+    name: Compose smoke
+    needs: check
+    uses: ./.github/workflows/ci-compose-smoke-reusable.yml

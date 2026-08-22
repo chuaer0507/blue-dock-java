@@ -1,0 +1,93 @@
+name: 'Release: Images (reusable)'
+
+# 构建并推送 bluedock-boot / bluedock-worker-notify / bluedock-worker-index 到 GHCR。
+# Dockerfile：deploy/docker/Dockerfile.{boot,worker-notify,worker-index}
+# 生产切换：Compose 用 bash deploy/scripts/prod-switch.sh <tag>
+# K8s：BLUEDOCK_REGISTRY=ghcr.io/<owner> bash deploy/scripts/prod-switch.sh <tag> --target k8s
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: Image tag (e.g. v1.0.0 or 1.0.0-abc1234)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-push:
+    name: Build and push GHCR
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push bluedock-boot
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/docker/Dockerfile.boot
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/bluedock-boot:${{ inputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push bluedock-worker-notify
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/docker/Dockerfile.worker-notify
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/bluedock-worker-notify:${{ inputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push bluedock-worker-index
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/docker/Dockerfile.worker-index
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/bluedock-worker-index:${{ inputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Summary
+        run: |
+          TAG="${{ inputs.tag }}"
+          OWNER="${{ github.repository_owner }}"
+          echo "## Published images" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`ghcr.io/${OWNER}/bluedock-boot:${TAG}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`ghcr.io/${OWNER}/bluedock-worker-notify:${TAG}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`ghcr.io/${OWNER}/bluedock-worker-index:${TAG}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Production switch (Compose):" >> "$GITHUB_STEP_SUMMARY"
+          echo '```bash' >> "$GITHUB_STEP_SUMMARY"
+          echo "bash deploy/scripts/prod-switch.sh ${TAG}" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Production switch (K8s):" >> "$GITHUB_STEP_SUMMARY"
+          echo '```bash' >> "$GITHUB_STEP_SUMMARY"
+          echo "BLUEDOCK_REGISTRY=ghcr.io/${OWNER} bash deploy/scripts/prod-switch.sh ${TAG} --target k8s" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Env version sync (optional local):" >> "$GITHUB_STEP_SUMMARY"
+          echo '```bash' >> "$GITHUB_STEP_SUMMARY"
+          echo "bash deploy/scripts/sync-env-image-tag.sh ${TAG}" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

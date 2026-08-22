@@ -1,0 +1,50 @@
+# 生产 Compose：仅拉取 Registry 镜像，不在服务器 build。
+# 配置：cp deploy/.env.prod.example deploy/.env.prod（仅 BLUEDOCK_VERSION 等业务变量）
+# 镜像名写死：bluedock-boot / bluedock-worker-*（换仓改本文件）
+# 版本：BLUEDOCK_VERSION（git tag）= 镜像 tag
+# 切换：bash deploy/scripts/prod-switch.sh <TAG>
+name: bluedock-prod
+
+services:
+  bluedock-boot:
+    image: bluedock-boot:${BLUEDOCK_VERSION}
+    restart: unless-stopped
+    env_file: .env.prod
+    environment:
+      BLUEDOCK_DEPLOY_ENV_FILE: /app/deploy/.env.prod
+    volumes:
+      - boot_data:/app/data
+      # 超管 bootstrap 写入宿主机 deploy/.env.prod（#admin账号 / #admin密码）
+      - ./:/app/deploy
+    expose: ["8080"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health/liveness || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+  bluedock-worker-notify:
+    image: bluedock-worker-notify:${BLUEDOCK_VERSION}
+    restart: unless-stopped
+    env_file: .env.prod
+
+  bluedock-worker-index:
+    image: bluedock-worker-index:${BLUEDOCK_VERSION}
+    restart: unless-stopped
+    env_file: .env.prod
+
+  nginx:
+    image: nginx:1.30.4
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      bluedock-boot:
+        condition: service_healthy
+
+volumes:
+  boot_data:

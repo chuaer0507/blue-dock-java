@@ -1,0 +1,56 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(java --version)",
+      "Bash(javac --version)",
+      "Bash(mvn --version)",
+      "Bash(mvn compile)",
+      "Bash(mvn test)",
+      "Bash(mvn package)",
+      "Bash(mvn clean)",
+      "Bash(mvn clean compile)",
+      "Bash(mvn clean test)",
+      "Bash(mvn clean package)",
+      "Bash(mvn -pl *)",
+      "Bash(mvn -pl * -am *)",
+      "Bash(mvn dependency:tree)",
+      "Bash(mvn flyway:*)",
+      "Bash(bun --version)",
+      "Bash(bun install)",
+      "Bash(bun run *)",
+      "Bash(docker compose *)",
+      "Bash(docker-compose *)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git diff --staged)",
+      "Bash(git log)",
+      "Bash(git log --oneline)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git branch)",
+      "Bash(git checkout *)",
+      "Bash(git checkout -b *)",
+      "Bash(mkdir -p *)",
+      "Bash(ls *)",
+      "Bash(ls -la *)",
+      "Bash(find *)",
+      "Bash(which *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -rf /)",
+      "Bash(git push --force)",
+      "Bash(git reset --hard)",
+      "Bash(git clean -fd)",
+      "Bash(git branch -D *)",
+      "Bash(git push --force-with-lease)"
+    ]
+  },
+  "rules": [
+    ".agents/rules/behavior.md",
+    ".agents/rules/architecture.md",
+    ".agents/rules/doc-sync.md",
+    ".agents/rules/api-contract.md",
+    ".agents/rules/messaging.md"
+  ]
+}

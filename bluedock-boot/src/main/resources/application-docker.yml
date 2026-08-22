@@ -1,0 +1,39 @@
+# Docker / 联调 Compose 专用（SPRING_PROFILES_ACTIVE=docker）
+# 覆盖本地 application.yml 的 127.0.0.1 绑定与宿主机端口。
+
+server:
+  address: 0.0.0.0
+  port: 8080
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql:3306/bluedock?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${SPRING_DATASOURCE_USERNAME:bluedock}
+    password: ${SPRING_DATASOURCE_PASSWORD:bluedock_dev}
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:redis}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      password: ${SPRING_DATA_REDIS_PASSWORD:bluedock_redis_dev}
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+
+bluedock:
+  seed:
+    enabled: ${BLUEDOCK_SEED_ENABLED:true}
+  changelog:
+    path: ${BLUEDOCK_CHANGELOG_PATH:/app/CHANGELOG.md}
+  jwt:
+    secret: ${BLUEDOCK_JWT_SECRET:dev-only-change-in-prod-use-32-chars-min!!}
+  upload:
+    base-dir: ${BLUEDOCK_UPLOAD_DIR:/app/data/uploads}
+  system:
+    license-path: ${BLUEDOCK_LICENSE_PATH:/app/data/secrets/license.json}
+  office:
+    enabled: ${BLUEDOCK_OFFICE_ENABLED:false}
+    document-server-url: ${BLUEDOCK_OFFICE_DOCUMENT_SERVER_URL:}
+    jwt-secret: ${BLUEDOCK_OFFICE_JWT_SECRET:}
+    public-base-url: ${BLUEDOCK_OFFICE_PUBLIC_BASE_URL:http://nginx}
+    allow-dev-token: ${BLUEDOCK_OFFICE_ALLOW_DEV_TOKEN:true}
+  meeting:
+    allow-dev-token: ${BLUEDOCK_MEETING_ALLOW_DEV_TOKEN:true}

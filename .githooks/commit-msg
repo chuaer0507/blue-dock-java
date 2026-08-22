@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# 校验 commit 首行符合 Angular 约定。
+# 规则权威来源：.github/pull_request_title_conventions.md
+# 启用：bash scripts/setup_githooks.sh  （或 git config core.hooksPath .githooks）
+
+set -euo pipefail
+
+msg_file="${1:-}"
+if [[ -z "$msg_file" || ! -f "$msg_file" ]]; then
+  echo "commit-msg: missing message file" >&2
+  exit 1
+fi
+
+# 只校验第一行（subject）；body / BREAKING CHANGE footer 不拦
+subject="$(head -n 1 "$msg_file" | tr -d '\r')"
+
+# 空提交（极少见）放行
+if [[ -z "$subject" ]]; then
+  exit 0
+fi
+
+# merge / revert / fixup / squash 放行
+if [[ "$subject" =~ ^(Merge[[:space:]]|Revert[[:space:]]|fixup!|squash!) ]]; then
+  exit 0
+fi
+
+# type(scope)!: summary  或  type: summary  ；可选 (no-changelog) 后缀
+pattern='^(feat|fix|perf|test|docs|refactor|build|ci|chore)(\([a-zA-Z0-9/_-]+\))?!?: .+(\(no-changelog\))?$'
+
+if [[ ! "$subject" =~ $pattern ]]; then
+  cat >&2 <<EOF
+commit-msg: 首行不符合约定。
+
+  期望: <type>(<scope>)?: <summary>
+  示例: feat(project): 新增项目成员邀请
+        fix(messenger): 修复未读计数
+        ci: 对齐 CI 编排
+
+  type: feat|fix|perf|test|docs|refactor|build|ci|chore
+  scope: 可选（project/task/messenger/boot/…），见 .github/pull_request_title_conventions.md
+
+  当前: ${subject}
+EOF
+  exit 1
+fi
+
+exit 0

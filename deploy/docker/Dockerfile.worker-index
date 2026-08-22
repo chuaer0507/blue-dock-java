@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1
+FROM eclipse-temurin:25-jdk-alpine AS builder
+WORKDIR /src
+COPY pom.xml .
+COPY bluedock-common bluedock-common
+COPY bluedock-worker-notify bluedock-worker-notify
+COPY bluedock-worker-index bluedock-worker-index
+COPY bluedock-boot bluedock-boot
+COPY bluedock-auth bluedock-auth
+COPY bluedock-user bluedock-user
+COPY bluedock-org bluedock-org
+COPY bluedock-project bluedock-project
+COPY bluedock-task bluedock-task
+COPY bluedock-messenger bluedock-messenger
+COPY bluedock-file bluedock-file
+COPY bluedock-report bluedock-report
+COPY bluedock-system bluedock-system
+COPY bluedock-search bluedock-search
+COPY bluedock-assistant bluedock-assistant
+COPY bluedock-realtime bluedock-realtime
+RUN apk add --no-cache maven \
+    && mvn -pl bluedock-worker-index -am package -DskipTests -q
+
+FROM eclipse-temurin:25-jre-alpine
+RUN addgroup -S bluedock && adduser -S bluedock -G bluedock
+WORKDIR /app
+COPY --from=builder /src/bluedock-worker-index/target/bluedock-worker-index-*.jar app.jar
+USER bluedock
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

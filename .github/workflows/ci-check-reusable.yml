@@ -1,0 +1,32 @@
+name: 'CI: Check (reusable)'
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: JDK version
+        required: false
+        type: string
+        default: '25'
+
+jobs:
+  check:
+    name: Compile / Test / Package
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: ./.github/actions/setup-java
+        with:
+          java-version: ${{ inputs.java-version }}
+
+      - name: Compile and test
+        run: mvn -B clean test
+
+      - name: Package boot JAR
+        run: mvn -B -pl bluedock-boot -am package -DskipTests
+
+      - name: Package worker JARs
+        run: mvn -B -pl bluedock-worker-notify,bluedock-worker-index -am package -DskipTests

@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: bluedock-worker-index
+  main:
+    web-application-type: none
+  datasource:
+    url: ${BLUEDOCK_DB_URL:jdbc:mysql://localhost:13306/bluedock?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${BLUEDOCK_DB_USER:bluedock}
+    password: ${BLUEDOCK_DB_PASSWORD:bluedock_dev}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:16379}
+      password: ${REDIS_PASSWORD:bluedock_redis_dev}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:19092}
+    consumer:
+      group-id: bluedock-worker-index
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+bluedock:
+  search:
+    opensearch:
+      enabled: ${BLUEDOCK_SEARCH_OPENSEARCH_ENABLED:false}
+      url: ${BLUEDOCK_SEARCH_OPENSEARCH_URL:http://127.0.0.1:19200}
+      index: ${BLUEDOCK_SEARCH_OPENSEARCH_INDEX:bluedock-search}

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: bluedock-prod
+
+resources:
+  - namespace.yaml
+  - ../../base
+  - ingress.yaml
+  - hpa.yaml
+
+images:
+  - name: registry.example.com/bluedock/bluedock-boot
+    newTag: "1.0.0"
+  - name: registry.example.com/bluedock/bluedock-worker-notify
+    newTag: "1.0.0"
+  - name: registry.example.com/bluedock/bluedock-worker-index
+    newTag: "1.0.0"

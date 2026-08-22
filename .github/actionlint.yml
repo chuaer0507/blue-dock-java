@@ -1,0 +1,5 @@
+# actionlint 配置（https://github.com/rhysd/actionlint）
+# 当前全部使用 GitHub-hosted runner，无需额外 labels。
+
+self-hosted-runner:
+  labels: []

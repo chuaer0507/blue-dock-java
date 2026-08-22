@@ -1,0 +1,51 @@
+name: 'CI: Compose Smoke (reusable)'
+
+# 联调镜像栈：sync-env-tag → compose --env-file .env.dev --build → healthz → staging-core-smoke
+# 见 deploy/docker-compose.yml、deploy/scripts/sync-env-image-tag.sh
+
+on:
+  workflow_call:
+
+jobs:
+  compose-smoke:
+    name: Compose stack smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync image tag into deploy/.env.dev
+        run: bash deploy/scripts/sync-env-image-tag.sh
+
+      - name: Start Compose stack
+        working-directory: deploy
+        run: docker compose -f docker-compose.yml --env-file .env.dev up -d --build
+
+      - name: Wait for healthz
+        run: |
+          for i in $(seq 1 90); do
+            if curl -sf --noproxy '*' http://localhost/healthz >/dev/null; then
+              echo "ready after ${i} attempts"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "healthz not ready" >&2
+          docker compose -f deploy/docker-compose.yml --env-file deploy/.env.dev ps
+          docker compose -f deploy/docker-compose.yml --env-file deploy/.env.dev logs --tail 80 bluedock-boot || true
+          exit 1
+
+      - name: Staging core smoke
+        run: BASE_URL=http://localhost bash deploy/scripts/staging-core-smoke.sh
+
+      - name: Compose logs on failure
+        if: failure()
+        working-directory: deploy
+        run: docker compose -f docker-compose.yml --env-file .env.dev logs --tail 120
+
+      - name: Tear down
+        if: always()
+        working-directory: deploy
+        run: docker compose -f docker-compose.yml --env-file .env.dev down -v

@@ -1,0 +1,38 @@
+# https://editorconfig.org
+# 与本仓风格对齐：Java / YAML / XML / SQL / Shell / TS 为 2 空格；Makefile 用 Tab。
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.md]
+# Markdown 硬换行依赖行尾两空格，勿裁剪
+trim_trailing_whitespace = false
+
+[*.{java,xml,yml,yaml,sql,json,properties,sh,imports}]
+indent_style = space
+indent_size = 2
+
+[*.{kt,kts}]
+indent_style = space
+indent_size = 2
+
+[*.{js,ts,tsx,jsx,css,scss,html}]
+indent_style = space
+indent_size = 2
+
+[*.{conf,nginx}]
+indent_style = space
+indent_size = 4
+
+[Makefile]
+indent_style = tab
+
+[*.bat]
+end_of_line = crlf

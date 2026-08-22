@@ -1,0 +1,56 @@
+name: 'CI: Main'
+
+# main / Tag 编排入口：check → 并行 k8s / compose-smoke；
+# v* Tag（或手动）额外跑 release-images。PR 走 ci-pull-requests.yml。
+# JDK 版本须与 docs/architecture/technology-stack.md、actions/setup-java、ci-pull-requests.yml 同步。
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Image tag for GHCR push (e.g. v1.0.0); empty = skip release'
+        required: false
+        default: ''
+
+concurrency:
+  group: ci-main-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check
+    uses: ./.github/workflows/ci-check-reusable.yml
+    with:
+      java-version: '25'
+
+  k8s-manifest:
+    name: K8s
+    needs: check
+    if: github.event_name != 'workflow_dispatch'
+    uses: ./.github/workflows/ci-k8s-manifest-reusable.yml
+
+  compose-smoke:
+    name: Compose smoke
+    needs: check
+    if: github.event_name != 'workflow_dispatch'
+    uses: ./.github/workflows/ci-compose-smoke-reusable.yml
+
+  release-images:
+    name: Release images
+    needs: check
+    if: >-
+      startsWith(github.ref, 'refs/tags/') ||
+      (github.event_name == 'workflow_dispatch' && inputs.tag != '')
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/release-images-reusable.yml
+    with:
+      tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    secrets: inherit

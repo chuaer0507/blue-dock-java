@@ -1,0 +1,17 @@
+# 上传落盘 PVC（BLUEDOCK_UPLOAD_DIR=/app/data/uploads）。
+# - RWO：适合单副本 boot（staging replicas=1）
+# - 多副本须 RWX 或对象存储（管理端 OSS）
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bluedock-uploads
+  labels:
+    app.kubernetes.io/part-of: bluedock
+    app.kubernetes.io/component: uploads
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  # storageClassName: 按集群填写；留空用默认

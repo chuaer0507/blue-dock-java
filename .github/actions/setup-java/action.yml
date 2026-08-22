@@ -1,0 +1,22 @@
+name: setup-java
+description: 安装 Temurin JDK 并启用 Maven 依赖缓存
+
+inputs:
+  java-version:
+    description: JDK 版本（须与技术栈同步）
+    required: false
+    default: '25'
+  distribution:
+    description: JDK 发行版
+    required: false
+    default: 'temurin'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ inputs.distribution }}
+        java-version: ${{ inputs.java-version }}
+        cache: maven

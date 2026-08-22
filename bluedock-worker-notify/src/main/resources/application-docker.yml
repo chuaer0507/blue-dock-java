@@ -1,0 +1,16 @@
+# Docker / 联调 Compose（SPRING_PROFILES_ACTIVE=docker）
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:${BLUEDOCK_DB_URL:jdbc:mysql://mysql:3306/bluedock?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false}}
+    username: ${SPRING_DATASOURCE_USERNAME:${BLUEDOCK_DB_USER:bluedock}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${BLUEDOCK_DB_PASSWORD:bluedock_dev}}
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:${REDIS_HOST:redis}}
+      port: ${SPRING_DATA_REDIS_PORT:${REDIS_PORT:6379}}
+      password: ${SPRING_DATA_REDIS_PASSWORD:${REDIS_PASSWORD:bluedock_redis_dev}}
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:${KAFKA_BOOTSTRAP:kafka:9092}}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

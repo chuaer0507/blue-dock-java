@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bluedock-worker-index
+  labels:
+    app: bluedock-worker-index
+    app.kubernetes.io/part-of: bluedock
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bluedock-worker-index
+  template:
+    metadata:
+      labels:
+        app: bluedock-worker-index
+    spec:
+      containers:
+        - name: worker
+          image: registry.example.com/bluedock/bluedock-worker-index:latest
+          envFrom:
+            - secretRef:
+                name: bluedock-app-secrets
+            - configMapRef:
+                name: bluedock-app-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi

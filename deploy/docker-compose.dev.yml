@@ -1,0 +1,146 @@
+# deploy/docker-compose.dev.yml — 开发依赖栈
+# 仅 MySQL / Redis / Kafka / Nginx；应用在宿主机跑，改代码无需 docker build。
+#
+#   make dev-up
+#   make run-boot
+#
+# 宿主机端口（本仓库开发栈）：
+#   MySQL 13306 / Redis 16379 / Kafka 19092 / Nginx 18080（对外 API 入口）
+#   bluedock-boot 不发布端口：仅本机回环 8080，供 Nginx 容器回源（非客户端入口）
+# 勿与其他本机容器栈同时起冲突端口。
+# 本文件不含应用镜像版本；版本在 deploy/.env.dev（BLUEDOCK_VERSION=git tag，由 sync-env-image-tag 写入）。
+
+name: bluedock-dev
+
+services:
+  mysql:
+    image: mysql:9.7.2
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: bluedock_root_dev
+      MYSQL_DATABASE: bluedock
+      MYSQL_USER: bluedock
+      MYSQL_PASSWORD: bluedock_dev
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+      - ./mysql/conf.d/bluedock.cnf:/etc/mysql/conf.d/bluedock.cnf:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:8.2.8
+    ports:
+      - "16379:6379"
+    command: redis-server --appendonly yes --requirepass bluedock_redis_dev
+    volumes:
+      - redis_data_dev:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "bluedock_redis_dev", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # PLAINTEXT only — IDE Kafka 插件须关 SASL/SSL
+  kafka:
+    image: apache/kafka:4.3.1
+    hostname: kafka
+    ports:
+      - "19092:9092"
+    environment:
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:19092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+  nginx:
+    image: nginx:1.30.4
+    ports:
+      - "18080:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
+  # 可选：make 时加 --profile opensearch
+  #   docker compose -f deploy/docker-compose.dev.yml --profile opensearch up -d
+  opensearch:
+    profiles: ["opensearch"]
+    image: opensearchproject/opensearch:2.19.1
+    ports:
+      - "19200:9200"
+    environment:
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+      bootstrap.memory_lock: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - opensearch_data_dev:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200 >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  # 可选：--profile onlyoffice
+  #   docker compose -f deploy/docker-compose.dev.yml --profile onlyoffice up -d
+  # 宿主机 JVM 建议：
+  #   BLUEDOCK_OFFICE_ENABLED=true
+  #   BLUEDOCK_OFFICE_DOCUMENT_SERVER_URL=http://127.0.0.1:18082
+  #   BLUEDOCK_OFFICE_JWT_SECRET=bluedock_office_dev_secret
+  #   BLUEDOCK_OFFICE_PUBLIC_BASE_URL=http://host.docker.internal:18080
+  onlyoffice:
+    profiles: ["onlyoffice"]
+    image: onlyoffice/documentserver:8.2.2
+    ports:
+      - "18082:80"
+    environment:
+      JWT_ENABLED: "true"
+      JWT_SECRET: bluedock_office_dev_secret
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - onlyoffice_data_dev:/var/www/onlyoffice/Data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost/healthcheck >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 90s
+
+volumes:
+  mysql_data_dev:
+  redis_data_dev:
+  opensearch_data_dev:
+  onlyoffice_data_dev:

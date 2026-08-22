@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bluedock-boot
+  labels:
+    app: bluedock-boot
+    app.kubernetes.io/part-of: bluedock
+spec:
+  # RWO PVC 时建议 replicas=1；多副本须 RWX 或 OSS
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: bluedock-boot
+  template:
+    metadata:
+      labels:
+        app: bluedock-boot
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: bluedock-boot
+          image: registry.example.com/bluedock/bluedock-boot:latest
+          ports:
+            - name: http
+              containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: bluedock-app-secrets
+            - configMapRef:
+                name: bluedock-app-config
+          volumeMounts:
+            - name: uploads
+              mountPath: /app/data/uploads
+            - name: secrets-dir
+              mountPath: /app/data/secrets
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 5"]
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: bluedock-uploads
+        - name: secrets-dir
+          emptyDir: {}

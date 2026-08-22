@@ -1,0 +1,59 @@
+# Java / Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/*
+!.vscode/settings.json
+*.classpath
+*.project
+.settings/
+bin/
+
+# Claude Code 本机权限（勿提交）
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+deploy/logs/
+
+# Local secrets（LDAP / 推送 / License 等本机密钥 — never commit）
+data/secrets/**
+!data/secrets/.gitkeep
+
+# Production secrets / deploy state (never commit)
+deploy/.env.prod
+deploy/.env.dev
+deploy/.deploy-state
+deploy/.deploy-history
+
+# TLS certs (never commit)
+deploy/nginx/ssl/*.pem
+deploy/nginx/ssl/*.key
+!deploy/nginx/ssl/README.md
+!deploy/nginx/ssl/.gitkeep
+
+# Local public storage
+public/
+data/releases/
+data/uploads/
+
+# Node / Bun（若 monorepo 含前端包）
+node_modules/
+.turbo/
+dist/
+*.tsbuildinfo

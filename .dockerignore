@@ -1,0 +1,15 @@
+# 加速构建
+.git
+.githooks
+.github
+.cursor
+.claude
+.agents
+.idea
+.vscode
+**/target
+**/.DS_Store
+data
+docs
+deploy/logs
+*.iml

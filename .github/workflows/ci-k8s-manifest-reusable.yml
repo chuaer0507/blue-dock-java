@@ -1,0 +1,17 @@
+name: 'CI: K8s Manifest (reusable)'
+
+# 无集群：kubectl kustomize 渲染 + 关键资源断言（见 deploy/scripts/k8s-manifest-check.sh）
+
+on:
+  workflow_call:
+
+jobs:
+  k8s-manifest-check:
+    name: Kustomize manifest check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Kustomize manifest check
+        run: bash deploy/scripts/k8s-manifest-check.sh

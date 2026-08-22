@@ -1,0 +1,122 @@
+spring:
+  application:
+    name: bluedock-boot
+  # 默认 zh；实际以请求 Accept-Language 为准（见 LocaleFilter）
+  web:
+    locale: zh_CN
+  datasource:
+    url: jdbc:mysql://localhost:13306/bluedock?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+    username: bluedock
+    password: bluedock_dev
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 2
+  data:
+    redis:
+      host: localhost
+      port: 16379
+      password: bluedock_redis_dev
+  kafka:
+    bootstrap-servers: localhost:19092
+    consumer:
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+  servlet:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 512MB
+
+server:
+  # 仅 Nginx / 本机回环回源；不对外发布（客户端走 :18080）
+  address: 127.0.0.1
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    com.bluedock: INFO
+
+bluedock:
+  version: ${BLUEDOCK_VERSION:1.0.0}
+  demo:
+    # 空=关闭演示帐号接口；配置后匿名 GET /api/system/demo 回显 account/password
+    account: ${BLUEDOCK_DEMO_ACCOUNT:}
+    password: ${BLUEDOCK_DEMO_PASSWORD:}
+  changelog:
+    path: ${BLUEDOCK_CHANGELOG_PATH:CHANGELOG.md}
+  jwt:
+    # 开发默认；生产必须用环境变量覆盖
+    secret: ${BLUEDOCK_JWT_SECRET:dev-only-change-in-prod-use-32-chars-min!!}
+    # 短效 access（秒）；过期后客户端用 refresh 无感续期
+    access-ttl-seconds: ${BLUEDOCK_JWT_ACCESS_TTL_SECONDS:7200}
+    # 长效 refresh（秒）
+    refresh-ttl-seconds: ${BLUEDOCK_JWT_REFRESH_TTL_SECONDS:2592000}
+  upload:
+    base-dir: ${BLUEDOCK_UPLOAD_DIR:./data/uploads}
+    chunk-size: 5242880
+    max-file-size-mb: 1024
+    # 孤儿分片目录清理间隔（毫秒）
+    temp-cleanup-ms: 3600000
+  search:
+    # mysql | docs | opensearch（失败自动降级 docs → mysql）
+    engine: ${BLUEDOCK_SEARCH_ENGINE:docs}
+    opensearch:
+      enabled: ${BLUEDOCK_SEARCH_OPENSEARCH_ENABLED:false}
+      url: ${BLUEDOCK_SEARCH_OPENSEARCH_URL:http://127.0.0.1:19200}
+      index: ${BLUEDOCK_SEARCH_OPENSEARCH_INDEX:bluedock-search}
+  office:
+    enabled: ${BLUEDOCK_OFFICE_ENABLED:false}
+    document-server-url: ${BLUEDOCK_OFFICE_DOCUMENT_SERVER_URL:}
+    jwt-secret: ${BLUEDOCK_OFFICE_JWT_SECRET:}
+    public-base-url: ${BLUEDOCK_OFFICE_PUBLIC_BASE_URL:http://127.0.0.1:18080}
+    allow-dev-token: ${BLUEDOCK_OFFICE_ALLOW_DEV_TOKEN:true}
+    token-ttl-seconds: ${BLUEDOCK_OFFICE_TOKEN_TTL_SECONDS:7200}
+  system:
+    license-path: ${BLUEDOCK_LICENSE_PATH:./data/secrets/license.json}
+    # local=本机模拟在线授权；remote=官方商店（需 license-online-url）
+    license-online-mode: ${BLUEDOCK_LICENSE_ONLINE_MODE:local}
+    license-online-url: ${BLUEDOCK_LICENSE_ONLINE_URL:}
+    license-trial-days: ${BLUEDOCK_LICENSE_TRIAL_DAYS:14}
+    license-trial-people: ${BLUEDOCK_LICENSE_TRIAL_PEOPLE:3}
+    # MaxMind GeoLite2-Country.mmdb 路径；空则仅 CDN 国家头 + 内网启发式
+    geoip-mmdb: ${BLUEDOCK_GEOIP_MMDB:}
+  apps:
+    # 装/更/卸后可选 HTTP Hook（完整 URL）；空=关闭。Body: {event,appId,name,version,at}
+    lifecycle-hook-url: ${BLUEDOCK_APPS_LIFECYCLE_HOOK_URL:}
+    lifecycle-hook-timeout-ms: ${BLUEDOCK_APPS_LIFECYCLE_HOOK_TIMEOUT_MS:8000}
+    # true=Hook 失败仅日志；false=install/update 抛错并尽力回滚
+    lifecycle-hook-fail-open: ${BLUEDOCK_APPS_LIFECYCLE_HOOK_FAIL_OPEN:true}
+  meeting:
+    enabled: ${BLUEDOCK_MEETING_ENABLED:true}
+    app-id: ${BLUEDOCK_MEETING_APP_ID:}
+    app-certificate: ${BLUEDOCK_MEETING_APP_CERTIFICATE:}
+    # 无证书时允许开发态令牌（生产务必关闭并配置 Agora）
+    allow-dev-token: ${BLUEDOCK_MEETING_ALLOW_DEV_TOKEN:true}
+    channel-salt: ${BLUEDOCK_MEETING_CHANNEL_SALT:${BLUEDOCK_JWT_SECRET:dev-only-change-in-prod-use-32-chars-min!!}}
+    share-base-url: ${BLUEDOCK_MEETING_SHARE_BASE_URL:http://localhost:5173}
+    share-ttl-hours: 6
+  seed:
+    # 系统机器人等开发种子；生产建议 false。超管 bootstrap 不依赖本开关。
+    enabled: ${BLUEDOCK_SEED_ENABLED:true}
+    admin-nickname: Super Admin
+  deploy:
+    # 超管凭据写入路径；空则按 profile 选 deploy/.env.dev 或 .env.prod
+    env-file: ${BLUEDOCK_DEPLOY_ENV_FILE:}
+  outbox:
+    enabled: ${BLUEDOCK_OUTBOX_ENABLED:true}
+    poll-ms: ${BLUEDOCK_OUTBOX_POLL_MS:500}
+    batch-size: ${BLUEDOCK_OUTBOX_BATCH_SIZE:50}

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bluedock-worker-notify
+  labels:
+    app: bluedock-worker-notify
+    app.kubernetes.io/part-of: bluedock
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bluedock-worker-notify
+  template:
+    metadata:
+      labels:
+        app: bluedock-worker-notify
+    spec:
+      containers:
+        - name: worker
+          image: registry.example.com/bluedock/bluedock-worker-notify:latest
+          envFrom:
+            - secretRef:
+                name: bluedock-app-secrets
+            - configMapRef:
+                name: bluedock-app-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi

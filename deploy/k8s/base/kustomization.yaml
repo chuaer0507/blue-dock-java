@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - configmap.yaml
+  - uploads-pvc.yaml
+  - bluedock-boot-deployment.yaml
+  - bluedock-boot-service.yaml
+  - worker-notify-deployment.yaml
+  - worker-index-deployment.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: bluedock
+    includeSelectors: false
+
+images:
+  - name: registry.example.com/bluedock/bluedock-boot
+    newTag: latest
+  - name: registry.example.com/bluedock/bluedock-worker-notify
+    newTag: latest
+  - name: registry.example.com/bluedock/bluedock-worker-index
+    newTag: latest
