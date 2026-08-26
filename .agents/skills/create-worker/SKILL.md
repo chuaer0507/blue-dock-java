@@ -14,6 +14,8 @@ Worker 模块（`bluedock-worker-*`）**无 HTTP 端点**，仅消费 Kafka 事�
 - [ ] Worker 模块无 `controller/` 目录？
 - [ ] Topic / groupId 使用 `KafkaTopics` / `ConsumerGroups` 常量？
 - [ ] 消费者幂等？
+- [ ] 消费失败不会确认消息；重试与死信策略符合现有消费端配置？
+- [ ] 消费处理涉及敏感数据或关键状态时，权限边界、审计记录与异常日志不泄漏敏感信息？
 - [ ] 未用 Redis List 顶替 Kafka？
 - [ ] 已更新 `docs/architecture/messaging.md`？
 

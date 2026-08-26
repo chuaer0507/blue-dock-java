@@ -64,7 +64,6 @@
 | `create-service` | 新建 Service + Mapper + Entity（`/create-service`） |
 | `create-migration` | 创建 / 修改 Flyway 迁移（`/create-migration`） |
 | `create-worker` | 新建 Kafka Worker 消费者（`/create-worker`） |
-| `backend-spec` | Java 后端统一规范（`/backend-spec`） |
 
 ## 现有 commands
 
@@ -77,4 +76,3 @@
 | `/create-service` | → skill `create-service` |
 | `/create-migration` | → skill `create-migration` |
 | `/create-worker` | → skill `create-worker` |
-| `/backend-spec` | → skill `backend-spec` |

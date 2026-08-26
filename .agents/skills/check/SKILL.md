@@ -43,3 +43,10 @@ mvn -q dependency:tree
 - JSON camelCase
 
 对照 [doc-sync.md](../../rules/doc-sync.md)：相关 `docs/` 是否已更新。
+
+## 5. 交付质量抽查
+
+- 新增或修改的 Java 文件没有未使用 import、变量或私有方法；新增代码无 IDE Warning。
+- 涉及写操作时，抽查事务、权限、幂等与并发冲突处理是否与业务风险匹配。
+- 涉及第三方、上传、回调或外部 URL 时，抽查密钥配置、超时、验签与输入边界。
+- 变更模块的 REST API 时，确认已执行该模块的全量 API 回归；无法自动执行时，报告缺失的回归证据，不把编译或单测等同于 API 回归。

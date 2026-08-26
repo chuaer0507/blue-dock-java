@@ -19,10 +19,10 @@ Cursor / Codex **不会**自动注入 `.agents/rules/*.md` 全文。
 | 新建 / 拆模块 | `modules.md` |
 
 Skills：`.agents/skills/<name>/SKILL.md`  
-（`check` / `code-reviewer` / `create-module` / `create-controller` / `create-service` / `create-migration` / `create-worker` / `backend-spec`）
+（`check` / `code-reviewer` / `create-module` / `create-controller` / `create-service` / `create-migration` / `create-worker`）
 
 Commands：`.agents/commands/`（经 `.claude/commands` symlink）  
-（`/check` / `/review` / `/create-module` / `/create-controller` / `/create-service` / `/create-migration` / `/create-worker` / `/backend-spec`）
+（`/check` / `/review` / `/create-module` / `/create-controller` / `/create-service` / `/create-migration` / `/create-worker`）
 
 ## 沟通
 

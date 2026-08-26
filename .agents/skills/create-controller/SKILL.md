@@ -15,6 +15,8 @@ description: 在领域模块中创建 REST Controller，对齐 API 契约
 - [ ] `@RequestMapping` 仅一个 prefix（禁止别名）？
 - [ ] JSON camelCase？
 - [ ] 错误 `message` 走 `I18nKeys`（见 [i18n.md](../../rules/i18n.md)），禁止硬编码？
+- [ ] 所有读取、修改、导出与敏感字段查看都经 Service 完成权限及数据范围校验？
+- [ ] Controller、端点、请求/响应字段与非显然分支已补齐必要中文注释？
 - [ ] 已按 [doc-sync.md](../../rules/doc-sync.md) 更新 `docs/contract/api-contract.md`？
 
 ## 文件位置
@@ -60,4 +62,5 @@ public class <Resource>Controller {
 
 1. 确认 `bluedock-boot` 已引入该模块
 2. `mvn -pl bluedock-<module> -am compile`
-3. 更新 `docs/contract/api-contract.md`
+3. 执行并记录该模块全部 REST API 回归
+4. 更新 `docs/contract/api-contract.md`
