@@ -25,7 +25,7 @@
 | `GET /api/dialog/config` | Bearer | 配置；`dialogId` → `isMuted`/`isTop`/`isHidden`/`tag`/`isChatMuted`/`color` |
 | `POST /api/dialog/config/save` | Bearer | 保存；`isMuted?`/`tag?`/`isChatMuted?`（群禁言仅群主/管理员，普通群） |
 | `GET /api/dialog/message/silence` | Bearer | 免打扰快捷开关；`dialogId` · `isSilent`（默认 1）；同 `isMuted` |
-| `GET /api/dialog/message/list` | Bearer | 消息列表；`dialogId` · `beforeId?` · `take?`；任务群须对挂接任务可见 |
+| `GET /api/dialog/message/list` | Bearer | 消息列表；`dialogId` · `beforeId?` · `take?`；AI 单聊按当前用户会话键隔离，任务群须对挂接任务可见 |
 | `GET /api/dialog/message/latest` | Bearer | 多会话增量；`dialogs` JSON 数组（`id`/`dialogId`+`latestId?`，≤5）· `take?`（默认 25，≤50） |
 | `GET /api/dialog/message/one` | Bearer | 单条消息；`messageId` |
 | `GET /api/dialog/message/detail` | Bearer | 详情；`messageId` · `onlyUpdateAt?`；file/image 附带 `file` 元数据 |

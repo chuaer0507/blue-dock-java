@@ -282,7 +282,8 @@ public class DialogService {
       throw new BusinessException(ErrorCodes.NOT_FOUND, I18nKeys.DIALOG_NOT_FOUND);
     }
     int n = take == null ? 50 : take;
-    List<DialogMessage> messages = dialogs.listMessages(dialogId, beforeId, n);
+    List<DialogMessage> messages =
+        dialogs.listMessages(dialogId, beforeId, n, dialogs.findUserSessionKey(dialogId, userId));
     List<DialogMessageView> views = new ArrayList<>(messages.size());
     for (DialogMessage m : messages) {
       views.add(DialogMessageView.from(m));
@@ -2636,7 +2637,8 @@ public class DialogService {
     }
     if (dialogId != null && dialogId > 0 && dialogs.isMember(dialogId, userId)) {
       List<String> ctx = new ArrayList<>();
-      for (DialogMessage m : dialogs.listMessages(dialogId, null, 5)) {
+      for (DialogMessage m :
+          dialogs.listMessages(dialogId, null, 5, dialogs.findUserSessionKey(dialogId, userId))) {
         if (!"text".equals(m.getType() == null ? "" : m.getType())) {
           continue;
         }

@@ -32,6 +32,7 @@
 | 列 | 说明 |
 | -- | ---- |
 | dialog_id / user_id | 会话与发送者（API wire 仍称 userId；含机器人） |
+| session_key | AI 单聊消息所属会话键；普通会话为空。`message/list` 按当前用户的 `dialog_users.session_key` 过滤，确保 AI 多会话隔离。 |
 | type | text / file / image / vote / wordChain / meeting / … |
 | body | JSON/长文本载荷（API wire 字段名仍常为 `body`）；vote/wordChain 状态内嵌（见 [api.md](api.md)） |
 | read / send | 已阅人数 / 应达人数（可演进为回执表） |

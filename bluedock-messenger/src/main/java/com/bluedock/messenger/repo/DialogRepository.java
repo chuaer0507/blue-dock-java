@@ -496,11 +496,12 @@ public class DialogRepository {
   }
 
   public void insertMessage(DialogMessage m) {
+    String sessionKey = findActiveSessionKey(m.getDialogId());
     jdbc.update(
         """
         INSERT INTO bluedock_dialog_messages
-          (id, dialog_id, user_id, type, body, reply_id, tag_user_id, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (id, dialog_id, user_id, type, body, reply_id, tag_user_id, session_key, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         m.getId(),
         m.getDialogId(),
@@ -509,6 +510,7 @@ public class DialogRepository {
         m.getBody(),
         m.getReplyId(),
         m.getTagUserId(),
+        sessionKey,
         toTs(m.getCreatedAt()),
         toTs(m.getCreatedAt()));
   }
@@ -1270,8 +1272,38 @@ public class DialogRepository {
     return m;
   }
 
-  public List<DialogMessage> listMessages(long dialogId, Long beforeId, int take) {
+  public List<DialogMessage> listMessages(long dialogId, Long beforeId, int take, String sessionKey) {
     int limit = Math.min(Math.max(take, 1), 100);
+    String key = sessionKey == null ? "" : sessionKey.trim();
+    if (!key.isEmpty()) {
+      if (beforeId != null && beforeId > 0) {
+        return jdbc.query(
+            """
+            SELECT id, dialog_id, user_id, type, body, reply_id, tag_user_id, created_at, updated_at
+            FROM bluedock_dialog_messages
+            WHERE dialog_id = ? AND session_key = ? AND deleted_at IS NULL AND id < ?
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            MESSAGE_MAPPER,
+            dialogId,
+            key,
+            beforeId,
+            limit);
+      }
+      return jdbc.query(
+          """
+          SELECT id, dialog_id, user_id, type, body, reply_id, tag_user_id, created_at, updated_at
+          FROM bluedock_dialog_messages
+          WHERE dialog_id = ? AND session_key = ? AND deleted_at IS NULL
+          ORDER BY id DESC
+          LIMIT ?
+          """,
+          MESSAGE_MAPPER,
+          dialogId,
+          key,
+          limit);
+    }
     if (beforeId != null && beforeId > 0) {
       return jdbc.query(
           """
@@ -1297,6 +1329,21 @@ public class DialogRepository {
         MESSAGE_MAPPER,
         dialogId,
         limit);
+  }
+
+  /** AI 单聊只有发起会话的成员写入该值；普通会话为空，保持历史行为。 */
+  public String findActiveSessionKey(long dialogId) {
+    var list =
+        jdbc.query(
+            """
+            SELECT session_key FROM bluedock_dialog_users
+            WHERE dialog_id = ? AND session_key IS NOT NULL AND session_key <> ''
+            ORDER BY updated_at DESC
+            LIMIT 1
+            """,
+            (rs, i) -> rs.getString(1),
+            dialogId);
+    return list.isEmpty() || list.get(0) == null ? "" : list.get(0);
   }
 
   /** 某会话在 {@code afterId} 之后的新消息（id 降序，最多 take 条）。 */
