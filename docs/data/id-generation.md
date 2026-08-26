@@ -6,7 +6,7 @@
 | -- | ---- |
 | 业务主键类型 | **`BIGINT`**（无符号语义，Java 用 `long`） |
 | 生成方式 | **Snowflake**（或兼容的分布式号段），集中在 `bluedock-common` 的 `IdGenerator` |
-| API wire | JSON number（注意 JS 安全整数：ID 保持在 `Number.MAX_SAFE_INTEGER` 内，或前端用 string——**首版用 number，生成器保证安全范围**） |
+| API wire | **JSON string**（所有 `BIGINT` 业务 ID 统一序列化为十进制字符串；请求 query 参数与 JSON body 同时接受数字文本） |
 | 物理列 | `id BIGINT NOT NULL`（`bluedock_users.id`）；API wire 仍称 **`userId`** |
 
 不采用 DB `AUTO_INCREMENT` 作为唯一来源（多实例 / 分库不友好）；单机开发可用雪花 workerId=1。
@@ -35,3 +35,7 @@
 | 纯 AUTO_INCREMENT | 水平扩展与预分配困难 |
 
 若未来绿字段（新微服务）需要 UUID，须在契约中显式声明，勿与既有 BIGINT 混用同一资源路径。
+
+## 客户端精度约束
+
+雪花 ID 已可超过 JavaScript 的 `Number.MAX_SAFE_INTEGER`，客户端不得将业务 ID 转换为 `number`、参与数值比较或以数值类型保存。路由、Query Key、HTTP 参数与领域模型均使用十进制字符串；仅分页、排序值、状态码等非 ID 数值保留 JSON number。

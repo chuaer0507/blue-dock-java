@@ -1,7 +1,7 @@
 # API 契约总表
 
 > 路径形态见 [api-routing.md](api-routing.md)。实现保持**路径与语义向前兼容**；HTTP 动词可逐步规范化（读 GET、写 POST），勿随意改路径。  
-> 响应信封：`{ code, message, data }`，字段 camelCase 全词（见 [naming.md](naming.md)）。  
+> 响应信封：`{ code, message, data }`，字段 camelCase 全词（见 [naming.md](naming.md)）。所有业务 `BIGINT` ID 在响应中均为十进制 JSON string；请求 query 参数和 JSON body 可传对应的数字文本。
 > **实现进度**：P0–P5 业务 REST 主路径基本齐（见 [ops/migration.md](../ops/migration.md)）；能力缺口见下文「能力缺口（parity）」。细则见各模块 `docs/modules/*/api.md`。
 
 ## users
