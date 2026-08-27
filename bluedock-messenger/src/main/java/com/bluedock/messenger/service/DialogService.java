@@ -766,10 +766,10 @@ public class DialogService {
       JsonNode root = JSON.readTree(body);
       if (root.isObject()) {
         if (root.has("text") && root.get("text").isTextual()) {
-          return root.get("text").asText("").trim();
+          return root.get("text").asString("").trim();
         }
         if (root.has("content") && root.get("content").isTextual()) {
-          return root.get("content").asText("").trim();
+          return root.get("content").asString("").trim();
         }
       }
     } catch (Exception ignored) {
@@ -1176,7 +1176,7 @@ public class DialogService {
     try {
       JsonNode root = JSON.readTree(body);
       if (root.isObject() && root.has("text") && root.get("text").isTextual()) {
-        String text = root.get("text").asText("");
+        String text = root.get("text").asString("");
         String updated = replaceListItemMark(text, index, checked);
         ObjectNode copy = ((ObjectNode) root).deepCopy();
         copy.put("text", updated);
@@ -1910,9 +1910,9 @@ public class DialogService {
       throw new BusinessException(ErrorCodes.BAD_REQUEST, I18nKeys.DIALOG_TEXT_EMPTY);
     }
     ArrayNode items = root.withArray("items");
-    int total = root.path("title").asText("").length();
+    int total = root.path("title").asString("").length();
     for (JsonNode it : items) {
-      total += it.path("text").asText("").length();
+      total += it.path("text").asString("").length();
     }
     if (total + line.length() > MAX_WORDCHAIN_CHARS) {
       throw new BusinessException(ErrorCodes.BAD_REQUEST, I18nKeys.DIALOG_WORD_CHAIN_TOO_LONG);
@@ -2782,7 +2782,7 @@ public class DialogService {
     if (node == null || node.isNull()) {
       return "";
     }
-    return node.asText("").trim();
+    return node.asString("").trim();
   }
 
   private static int codePointLen(String s) {
@@ -3747,11 +3747,11 @@ public class DialogService {
         }
         long messageId = item.has("messageId") ? item.get("messageId").asLong(0L) : 0L;
         long userId = item.has("userId") ? item.get("userId").asLong(0L) : 0L;
-        String type = item.has("type") ? item.get("type").asText("") : "";
+        String type = item.has("type") ? item.get("type").asString("") : "";
         String itemBody = "";
         if (item.has("body")) {
           JsonNode b = item.get("body");
-          itemBody = b.isTextual() ? b.asText("") : b.toString();
+          itemBody = b.isTextual() ? b.asString("") : b.toString();
         }
         out.add(new DialogMessageView(messageId, 0L, userId, type, itemBody, 0L, 0L, null));
       }

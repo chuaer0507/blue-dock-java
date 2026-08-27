@@ -98,7 +98,7 @@ public class UserBotWebhookHandler {
       if (node.path("code").asInt(0) != 200) {
         return;
       }
-      String message = node.path("message").asText("");
+      String message = node.path("message").asString("");
       if (message.isBlank()) {
         return;
       }

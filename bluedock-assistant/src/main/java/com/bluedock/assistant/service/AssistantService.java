@@ -383,7 +383,7 @@ public class AssistantService {
         out.put("result", null);
       }
       if (row.has("error") && !row.get("error").isNull()) {
-        out.put("error", row.get("error").asText());
+        out.put("error", row.get("error").asString());
       } else {
         out.put("error", null);
       }

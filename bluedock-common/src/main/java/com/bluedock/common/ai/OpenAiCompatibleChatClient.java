@@ -134,10 +134,10 @@ public class OpenAiCompatibleChatClient {
     if (choices.isArray() && !choices.isEmpty()) {
       JsonNode delta = choices.get(0).path("delta");
       if (delta.hasNonNull("content")) {
-        return delta.get("content").asText();
+        return delta.get("content").asString();
       }
       if (choices.get(0).hasNonNull("text")) {
-        return choices.get(0).get("text").asText();
+        return choices.get(0).get("text").asString();
       }
     }
     return null;
@@ -261,7 +261,7 @@ public class OpenAiCompatibleChatClient {
         throw new OpenAiChatException("http " + resp.statusCode() + ": " + truncate(resp.body()));
       }
       JsonNode root = json.readTree(resp.body());
-      String text = root != null && root.hasNonNull("text") ? root.get("text").asText("") : "";
+      String text = root != null && root.hasNonNull("text") ? root.get("text").asString("") : "";
       if (text.isBlank()) {
         throw new OpenAiChatException("empty transcription");
       }
@@ -472,11 +472,11 @@ public class OpenAiCompatibleChatClient {
     }
     JsonNode msg = choices.get(0).path("message");
     if (msg.hasNonNull("content")) {
-      return msg.get("content").asText();
+      return msg.get("content").asString();
     }
     // 部分网关把文本放在 choice 顶层
     if (choices.get(0).hasNonNull("text")) {
-      return choices.get(0).get("text").asText();
+      return choices.get(0).get("text").asString();
     }
     return null;
   }

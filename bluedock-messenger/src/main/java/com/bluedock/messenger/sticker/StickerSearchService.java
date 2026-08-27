@@ -132,12 +132,12 @@ public class StickerSearchService {
       if (height <= 10 || width <= 10) {
         continue;
       }
-      String src = item.path("thumbUrl").asText("").trim();
+      String src = item.path("thumbUrl").asString("").trim();
       if (src.isEmpty()) {
         continue;
       }
       Map<String, Object> row = new LinkedHashMap<>();
-      row.put("name", item.path("title").asText(""));
+      row.put("name", item.path("title").asString(""));
       row.put("src", src);
       row.put("height", height);
       row.put("width", width);

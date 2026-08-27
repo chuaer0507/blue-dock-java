@@ -54,7 +54,7 @@ public class RealtimeWebSocketHandler extends TextWebSocketHandler {
       return;
     }
     JsonNode node = objectMapper.readTree(payload);
-    String type = node.path("type").asText("");
+    String type = node.path("type").asString("");
     if (RealtimeEventTypes.PING.equals(type)) {
       sessions.touchPresence(session);
       session.sendMessage(
@@ -68,11 +68,11 @@ public class RealtimeWebSocketHandler extends TextWebSocketHandler {
         return;
       }
       JsonNode data = node.path("data");
-      String requestId = data.path("requestId").asText("");
+      String requestId = data.path("requestId").asString("");
       boolean success = data.path("success").asBoolean(false);
       Object result =
           data.has("result") ? objectMapper.convertValue(data.get("result"), Object.class) : null;
-      String error = data.has("error") && !data.get("error").isNull() ? data.get("error").asText() : null;
+      String error = data.has("error") && !data.get("error").isNull() ? data.get("error").asString() : null;
       operationResults.save(userId, requestId, success, result, error);
     }
   }

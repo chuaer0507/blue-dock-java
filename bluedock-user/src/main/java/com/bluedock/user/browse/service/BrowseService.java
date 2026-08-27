@@ -315,10 +315,10 @@ public class BrowseService {
             try {
               JsonNode node = json.readTree(raw);
               if (node.hasNonNull("name")) {
-                m.put("name", node.get("name").asText(""));
+                m.put("name", node.get("name").asString(""));
               }
               if (node.hasNonNull("extension")) {
-                m.put("extension", node.get("extension").asText(""));
+                m.put("extension", node.get("extension").asString(""));
               }
               if (node.hasNonNull("size")) {
                 m.put("size", node.get("size").asLong(0L));

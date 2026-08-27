@@ -196,8 +196,8 @@ public class OpenSearchEngine implements SearchEngine {
     for (JsonNode h : hits) {
       JsonNode src = h.path("_source");
       long refId = src.path("refId").asLong(0);
-      String title = src.path("title").asText("");
-      String content = src.path("content").asText("");
+      String title = src.path("title").asString("");
+      String content = src.path("content").asString("");
       long projectId = src.path("projectId").asLong(0);
       if (SearchIndexEvent.TYPE_MESSAGE.equals(docType)) {
         String snippet = content.isEmpty() ? title : content;

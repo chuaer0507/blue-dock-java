@@ -64,7 +64,7 @@ public class TaskMentionBridgeImpl implements TaskMentionBridge {
       try {
         JsonNode root = JSON.readTree(raw);
         if (root.hasNonNull("text")) {
-          return root.get("text").asText("");
+          return root.get("text").asString("");
         }
       } catch (Exception ignored) {
         // 非 JSON 则整段当文本
