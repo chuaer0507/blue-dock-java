@@ -765,10 +765,10 @@ public class DialogService {
     try {
       JsonNode root = JSON.readTree(body);
       if (root.isObject()) {
-        if (root.has("text") && root.get("text").isTextual()) {
+        if (root.has("text") && root.get("text").isString()) {
           return root.get("text").asString("").trim();
         }
-        if (root.has("content") && root.get("content").isTextual()) {
+        if (root.has("content") && root.get("content").isString()) {
           return root.get("content").asString("").trim();
         }
       }
@@ -1175,7 +1175,7 @@ public class DialogService {
     }
     try {
       JsonNode root = JSON.readTree(body);
-      if (root.isObject() && root.has("text") && root.get("text").isTextual()) {
+      if (root.isObject() && root.has("text") && root.get("text").isString()) {
         String text = root.get("text").asString("");
         String updated = replaceListItemMark(text, index, checked);
         ObjectNode copy = ((ObjectNode) root).deepCopy();
@@ -3751,7 +3751,7 @@ public class DialogService {
         String itemBody = "";
         if (item.has("body")) {
           JsonNode b = item.get("body");
-          itemBody = b.isTextual() ? b.asString("") : b.toString();
+          itemBody = b.isString() ? b.asString("") : b.toString();
         }
         out.add(new DialogMessageView(messageId, 0L, userId, type, itemBody, 0L, 0L, null));
       }
