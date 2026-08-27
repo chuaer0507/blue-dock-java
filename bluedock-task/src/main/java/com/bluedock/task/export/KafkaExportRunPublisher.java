@@ -1,6 +1,6 @@
 package com.bluedock.task.export;
 
-import tools.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.export.ExportRunEvent;
 import com.bluedock.common.export.ExportRunPublisher;
@@ -30,7 +30,7 @@ public class KafkaExportRunPublisher implements ExportRunPublisher {
     try {
       kafka.send(
           KafkaTopics.EXPORT_RUN, event.eventId(), objectMapper.writeValueAsString(event));
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.warn("export serialize failed: {}", e.toString());
     }
   }

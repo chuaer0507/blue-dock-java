@@ -1,6 +1,6 @@
 package com.bluedock.realtime.kafka;
 
-import tools.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.kafka.KafkaTopics;
 import com.bluedock.common.outbox.OutboxWriter;
@@ -44,7 +44,7 @@ public class KafkaRealtimeFanoutPublisher implements RealtimeFanoutPublisher {
         return;
       }
       kafka.send(KafkaTopics.REALTIME_FANOUT, key, json);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.warn("fanout serialize failed type={}", event.type(), e);
     }
   }

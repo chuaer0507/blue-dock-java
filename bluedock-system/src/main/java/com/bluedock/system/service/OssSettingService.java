@@ -1,6 +1,6 @@
 package com.bluedock.system.service;
 
-import tools.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.exception.BusinessException;
 import com.bluedock.common.exception.ErrorCodes;
@@ -159,7 +159,7 @@ public class OssSettingService implements OssExtensionChecker {
             json -> {
               try {
                 return objectMapper.readValue(json, OssSettingsDocument.class);
-              } catch (JsonProcessingException e) {
+              } catch (JacksonException e) {
                 log.warn("invalid oss settings json: {}", e.getMessage());
                 return null;
               }
@@ -170,7 +170,7 @@ public class OssSettingService implements OssExtensionChecker {
   private void persist(OssSettingsDocument doc) {
     try {
       settings.upsert(SETTING_NAME, objectMapper.writeValueAsString(doc));
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       throw new BusinessException(ErrorCodes.BAD_REQUEST, I18nKeys.SYSTEM_OSS_SAVE_FAILED);
     }
   }

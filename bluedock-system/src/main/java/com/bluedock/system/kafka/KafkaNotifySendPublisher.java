@@ -1,6 +1,6 @@
 package com.bluedock.system.kafka;
 
-import tools.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.kafka.KafkaTopics;
 import com.bluedock.common.notify.NotifySendEvent;
@@ -44,7 +44,7 @@ public class KafkaNotifySendPublisher implements NotifySendPublisher {
         return;
       }
       kafka.send(KafkaTopics.NOTIFY_SEND, key, json);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.warn("notify serialize failed: {}", e.toString());
     }
   }

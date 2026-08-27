@@ -1,6 +1,6 @@
 package com.bluedock.search.kafka;
 
-import tools.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.kafka.KafkaTopics;
 import com.bluedock.common.outbox.OutboxWriter;
@@ -44,7 +44,7 @@ public class KafkaSearchIndexPublisher implements SearchIndexPublisher {
         return;
       }
       kafka.send(KafkaTopics.SEARCH_INDEX, key, json);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.warn("search index serialize failed: {}", e.toString());
     }
   }

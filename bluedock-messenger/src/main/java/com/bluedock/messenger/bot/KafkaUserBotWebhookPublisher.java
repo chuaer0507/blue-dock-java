@@ -1,6 +1,6 @@
 package com.bluedock.messenger.bot;
 
-import tools.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.bot.UserBotWebhookEvent;
 import com.bluedock.common.bot.UserBotWebhookPublisher;
@@ -44,7 +44,7 @@ public class KafkaUserBotWebhookPublisher implements UserBotWebhookPublisher {
         return;
       }
       kafka.send(KafkaTopics.USER_BOT_WEBHOOK, key, json);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.warn("bot webhook serialize failed: {}", e.toString());
     }
   }
