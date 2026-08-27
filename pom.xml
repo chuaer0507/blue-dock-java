@@ -40,7 +40,7 @@
   <properties>
     <java.version>25</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mybatis-plus.version>3.5.14</mybatis-plus.version>
+    <mybatis-plus.version>3.5.17</mybatis-plus.version>
     <qiniu-java-sdk.version>7.19.0</qiniu-java-sdk.version>
     <aliyun-sdk-oss.version>3.18.5</aliyun-sdk-oss.version>
     <tencent-cos-api.version>5.6.273</tencent-cos-api.version>

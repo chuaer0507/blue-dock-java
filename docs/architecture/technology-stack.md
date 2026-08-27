@@ -1,13 +1,13 @@
 # 技术选型
 
-本文固定 **BlueDock** 生产栈各组件版本（截至 **2026-08-06**）。  
+本文固定 **BlueDock** 生产栈各组件版本（截至 **2026-08-27**）。  
 原则：后端取**最新 LTS（或等价稳定线）** + Kafka 当前支持 minor。本仓**只文档化后端**。
 
 | 组件 | 版本 | 线 | 说明 |
 | ---- | ---- | -- | ---- |
 | Java | **25**（LTS） | LTS | OpenJDK / Temurin；`pom` / CI `java-version: 25` |
 | Spring Boot | **4.1.0** | 当前稳定 | 一等支持 Java 25（Framework 7） |
-| MyBatis-Plus | **3.5.14** | 当前稳定 | `mybatis-plus-spring-boot4-starter` |
+| MyBatis-Plus | **3.5.17** | 当前稳定 | `mybatis-plus-spring-boot4-starter` |
 | MySQL | **9.7.2**（LTS） | LTS | Compose 镜像 `mysql:9.7.2` |
 | Redis | **8.2.8** Extended | Extended≈LTS | Compose `redis:8.2.8`；安全支持至 2030-09 |
 | Kafka | **4.3.1** | 社区滚动 | Compose `apache/kafka:4.3.1`（KRaft） |
@@ -26,7 +26,7 @@
 | 应用框架 | Spring Boot | **4.1.0** | Web、Security、Data、Scheduling、Actuator |
 | Web | Spring MVC | 7.x | REST `api/{resource}/{action}` |
 | 实时 | Spring WebSocket | 7.x | 即时同步 |
-| ORM | MyBatis-Plus | **3.5.14** | `mybatis-plus-spring-boot4-starter`；见 [architecture.md](architecture.md) |
+| ORM | MyBatis-Plus | **3.5.17** | `mybatis-plus-spring-boot4-starter`；见 [architecture.md](architecture.md) |
 | 连接池 | HikariCP | 内置 | MySQL |
 | 缓存 / 锁 | Spring Data Redis + Redisson | 随 Boot | 会话、缓存、分布式锁 |
 | 消息队列 | Apache Kafka + `spring-kafka` | **4.3.1** | 跨域异步、WS 扇出、通知、索引同步 |

@@ -15,7 +15,7 @@ Claude Code 专用入口：通过上方 `@AGENTS.md` 继承跨工具约束与铁
 
 **BlueDock（蓝坞）** 开源协作平台 **后端**：可部署的 Java 服务栈。API 契约以 `docs/contract/api-contract.md` 为唯一来源。
 
-**技术栈**：Java 25 · Spring Boot 4.1.0 · MyBatis-Plus 3.5.14 · MySQL 9.7.2 · Redis 8.2.8 Extended · Kafka 4.3.1 · Nginx 1.30.4
+**技术栈**：Java 25 · Spring Boot 4.1.0 · MyBatis-Plus 3.5.17 · MySQL 9.7.2 · Redis 8.2.8 Extended · Kafka 4.3.1 · Nginx 1.30.4
 
 **当前阶段**：P0–P5 业务 API **基本完成**（见 [ops/migration.md](docs/ops/migration.md)）；能力缺口见 [contract/api-contract.md](docs/contract/api-contract.md#能力缺口parity)。Compose 见 `deploy/`。发版冒烟见 [ops/regression.md](docs/ops/regression.md)。入口见 [docs/README.md](docs/README.md)、[technology-stack.md](docs/architecture/technology-stack.md)。
 

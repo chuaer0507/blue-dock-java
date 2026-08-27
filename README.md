@@ -12,7 +12,7 @@
 | ---- | ---- | ---- |
 | Java | 25（LTS） | 应用运行时 |
 | Spring Boot | 4.1.0 | Web、Security、Scheduling |
-| MyBatis-Plus | 3.5.14 | ORM |
+| MyBatis-Plus | 3.5.17 | ORM |
 | MySQL | 9.7.2 | 强一致业务数据 |
 | Redis | 8.2.8 Extended | 缓存、会话、限流、分布式锁 |
 | Kafka | 4.3.1（KRaft） | 通知、索引、WS 扇出、转码/导出 |
