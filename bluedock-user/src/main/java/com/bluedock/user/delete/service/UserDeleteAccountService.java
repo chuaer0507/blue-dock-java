@@ -1,6 +1,6 @@
 package com.bluedock.user.delete.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.auth.crypto.WirePasswordResolver;
 import com.bluedock.auth.domain.UserAccount;
 import com.bluedock.auth.repo.UserAccountRepository;

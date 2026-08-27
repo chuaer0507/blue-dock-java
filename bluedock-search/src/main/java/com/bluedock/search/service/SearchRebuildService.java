@@ -1,7 +1,7 @@
 package com.bluedock.search.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.auth.repo.UserAccountRepository;
 import com.bluedock.auth.security.AuthContext;
 import com.bluedock.common.exception.BusinessException;

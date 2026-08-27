@@ -1,6 +1,6 @@
 package com.bluedock.worker.index.rebuild;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.redis.RedisKeys;
 import com.bluedock.common.search.SearchIndexEvent;
 import com.bluedock.worker.index.opensearch.OpenSearchIndexSink;

@@ -6,7 +6,7 @@
 
 | 维度 | 说明 |
 | ---- | ---- |
-| 后端栈 | **Java 25** · **Spring Boot 4.1.0** · **MyBatis-Plus 3.5.17** · **MySQL 9.7.2** · **Redis 8.2.8** Extended · **Kafka 4.3.1** · **Nginx 1.30.4**（详见 [technology-stack.md](architecture/technology-stack.md)） |
+| 后端栈 | **Java 25** · **Spring Boot 4.1.0** · **Jackson 3.1.4** · **MyBatis-Plus 3.5.17** · **MySQL 9.7.2** · **Redis 8.2.8** Extended · **Kafka 4.3.1** · **Nginx 1.30.4**（详见 [technology-stack.md](architecture/technology-stack.md)） |
 | 文档目标 | 按功能模块写清业务边界、API 契约、数据模型、权限与验收点 |
 | 状态约定 | `[ ]` 待写 · `[~]` 起草中 · `[x]` 已定稿 |
 | 优先级 | **产品 P0/P1**（下表）≠ **实现阶段**（见 [ops/migration.md](ops/migration.md)） |

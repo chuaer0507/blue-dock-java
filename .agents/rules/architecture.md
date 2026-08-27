@@ -33,6 +33,6 @@ bluedock-worker-* → bluedock-{domain} → bluedock-common
 
 ## 技术栈（固定）
 
-Java **25** · Spring Boot **4.1.0** · MyBatis-Plus **3.5.17** · MySQL **9.7.2** · Redis **8.2.8** Extended · Kafka **4.3.1** · Nginx **1.30.4**
+Java **25** · Spring Boot **4.1.0** · Jackson **3.1.4** · MyBatis-Plus **3.5.17** · MySQL **9.7.2** · Redis **8.2.8** Extended · Kafka **4.3.1** · Nginx **1.30.4**
 
 本仓只维护后端；客户端工程不在此仓。详见 [docs/architecture/technology-stack.md](../../docs/architecture/technology-stack.md)。

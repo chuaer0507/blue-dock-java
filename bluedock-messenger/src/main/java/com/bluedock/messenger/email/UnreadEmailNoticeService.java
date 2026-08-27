@@ -1,7 +1,7 @@
 package com.bluedock.messenger.email;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.notify.NotifySendEvent;
 import com.bluedock.common.notify.NotifySendPublisher;
 import com.bluedock.common.notify.NotifySettingNames;

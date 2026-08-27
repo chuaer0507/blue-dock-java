@@ -1,6 +1,6 @@
 package com.bluedock.realtime.kafka;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.kafka.KafkaTopics;
 import com.bluedock.common.realtime.RealtimeFanoutEvent;
 import com.bluedock.realtime.ws.WsSessionRegistry;

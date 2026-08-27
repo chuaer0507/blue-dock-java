@@ -1,7 +1,7 @@
 package com.bluedock.messenger.sticker;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.http.HttpClient;

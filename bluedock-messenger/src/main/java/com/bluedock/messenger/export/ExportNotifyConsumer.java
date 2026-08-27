@@ -1,6 +1,6 @@
 package com.bluedock.messenger.export;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.export.ExportNotifyBridge;
 import com.bluedock.common.export.ExportNotifyEvent;
 import com.bluedock.common.kafka.ConsumerGroups;

@@ -1,7 +1,7 @@
 package com.bluedock.system.apps.repo;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.util.IdGenerator;
 import com.bluedock.system.apps.domain.InstalledApp;
 import java.sql.Timestamp;

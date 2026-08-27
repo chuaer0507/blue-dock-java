@@ -1,7 +1,7 @@
 package com.bluedock.messenger.meeting;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 import com.bluedock.auth.domain.UserAccount;
 import com.bluedock.auth.repo.UserAccountRepository;
 import com.bluedock.common.meeting.MeetingInviteBridge;

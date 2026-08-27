@@ -1,6 +1,6 @@
 package com.bluedock.worker.notify.export;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.export.ApproveExportBridge;
 import com.bluedock.common.export.ExportNotifyEvent;
 import com.bluedock.common.export.ExportRunEvent;
@@ -417,7 +417,7 @@ public class ExportRunHandler {
       List<Map<String, Object>> list =
           objectMapper.readValue(
               String.valueOf(timesRaw),
-              new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {});
+              new tools.jackson.core.type.TypeReference<List<Map<String, Object>>>() {});
       return list == null ? List.of() : list;
     } catch (Exception e) {
       return List.of();

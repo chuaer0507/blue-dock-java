@@ -1,6 +1,6 @@
 package com.bluedock.worker.index.opensearch;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.search.SearchIndexEvent;
 import java.net.URI;
 import java.net.http.HttpClient;

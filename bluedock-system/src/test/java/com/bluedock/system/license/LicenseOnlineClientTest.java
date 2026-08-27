@@ -3,7 +3,7 @@ package com.bluedock.system.license;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpServer;
 import com.bluedock.common.exception.BusinessException;
 import com.bluedock.common.i18n.I18nKeys;

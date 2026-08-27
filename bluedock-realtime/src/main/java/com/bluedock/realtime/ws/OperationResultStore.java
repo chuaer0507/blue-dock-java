@@ -1,6 +1,6 @@
 package com.bluedock.realtime.ws;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.redis.RedisKeys;
 import java.time.Duration;
 import java.util.LinkedHashMap;

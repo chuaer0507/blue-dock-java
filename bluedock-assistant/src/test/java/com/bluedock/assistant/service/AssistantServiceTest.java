@@ -12,7 +12,7 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.assistant.domain.AssistantSession;
 import com.bluedock.assistant.repo.AssistantFeedbackRepository;
 import com.bluedock.assistant.repo.AssistantSearchLogRepository;

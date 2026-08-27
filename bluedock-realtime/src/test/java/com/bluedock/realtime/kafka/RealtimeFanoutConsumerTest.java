@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.realtime.ws.WsSessionRegistry;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.support.Acknowledgment;

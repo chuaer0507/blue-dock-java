@@ -12,7 +12,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.exception.BusinessException;
 import com.bluedock.common.exception.ErrorCodes;
 import com.bluedock.common.i18n.I18nKeys;

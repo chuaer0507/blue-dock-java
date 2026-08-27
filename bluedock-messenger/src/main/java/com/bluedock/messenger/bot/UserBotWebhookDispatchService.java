@@ -1,7 +1,7 @@
 package com.bluedock.messenger.bot;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.auth.domain.UserAccount;
 import com.bluedock.auth.repo.UserAccountRepository;
 import com.bluedock.auth.service.TokenService;

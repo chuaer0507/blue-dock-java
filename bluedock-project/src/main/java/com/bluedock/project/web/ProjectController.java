@@ -1,6 +1,6 @@
 package com.bluedock.project.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.model.ResultModel;
 import com.bluedock.project.service.ProjectMemberService;
 import com.bluedock.project.service.ProjectService;

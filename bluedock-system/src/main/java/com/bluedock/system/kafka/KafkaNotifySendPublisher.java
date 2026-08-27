@@ -1,7 +1,7 @@
 package com.bluedock.system.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JsonProcessingException;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.kafka.KafkaTopics;
 import com.bluedock.common.notify.NotifySendEvent;
 import com.bluedock.common.notify.NotifySendPublisher;

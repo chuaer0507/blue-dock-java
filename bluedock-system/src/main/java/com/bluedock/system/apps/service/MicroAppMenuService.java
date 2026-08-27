@@ -1,7 +1,7 @@
 package com.bluedock.system.apps.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.auth.security.AuthContext;
 import com.bluedock.system.repo.SettingRepository;
 import com.bluedock.system.service.AdminGuard;

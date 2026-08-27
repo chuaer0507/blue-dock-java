@@ -1,8 +1,8 @@
 package com.bluedock.assistant.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.assistant.domain.AssistantSession;
 import com.bluedock.assistant.repo.AssistantFeedbackRepository;
 import com.bluedock.assistant.repo.AssistantSearchLogRepository;

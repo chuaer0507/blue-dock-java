@@ -7,6 +7,7 @@
 | ---- | ---- | -- | ---- |
 | Java | **25**（LTS） | LTS | OpenJDK / Temurin；`pom` / CI `java-version: 25` |
 | Spring Boot | **4.1.0** | 当前稳定 | 一等支持 Java 25（Framework 7） |
+| Jackson | **3.1.4** | Spring Boot 管理 | `tools.jackson.*`；`com.fasterxml.jackson.annotation` 为官方兼容例外 |
 | MyBatis-Plus | **3.5.17** | 当前稳定 | `mybatis-plus-spring-boot4-starter` |
 | MySQL | **9.7.2**（LTS） | LTS | Compose 镜像 `mysql:9.7.2` |
 | Redis | **8.2.8** Extended | Extended≈LTS | Compose `redis:8.2.8`；安全支持至 2030-09 |
@@ -24,6 +25,7 @@
 | ---- | ---- | ---- | ---- |
 | 语言 / 运行时 | OpenJDK（Temurin） | **25** | API、WS、后台任务；可用虚拟线程 |
 | 应用框架 | Spring Boot | **4.1.0** | Web、Security、Data、Scheduling、Actuator |
+| JSON | Jackson | **3.1.4** | Spring Boot 管理；使用 `tools.jackson.*` |
 | Web | Spring MVC | 7.x | REST `api/{resource}/{action}` |
 | 实时 | Spring WebSocket | 7.x | 即时同步 |
 | ORM | MyBatis-Plus | **3.5.17** | `mybatis-plus-spring-boot4-starter`；见 [architecture.md](architecture.md) |

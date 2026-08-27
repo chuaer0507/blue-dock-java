@@ -1,7 +1,7 @@
 package com.bluedock.search.engine;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.search.SearchIndexEvent;
 import com.bluedock.search.config.SearchProperties;
 import com.bluedock.search.web.dto.SearchHitView;

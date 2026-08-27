@@ -1,7 +1,7 @@
 package com.bluedock.search.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JsonProcessingException;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.kafka.KafkaTopics;
 import com.bluedock.common.outbox.OutboxWriter;
 import com.bluedock.common.search.SearchIndexEvent;

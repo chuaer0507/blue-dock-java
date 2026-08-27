@@ -1,6 +1,6 @@
 package com.bluedock.auth.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.auth.service.TokenService;
 import com.bluedock.common.exception.ErrorCodes;
 import com.bluedock.common.i18n.I18nKeys;

@@ -1,6 +1,6 @@
 package com.bluedock.file.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.auth.security.AuthContext;
 import com.bluedock.common.exception.BusinessException;
 import com.bluedock.common.exception.ErrorCodes;

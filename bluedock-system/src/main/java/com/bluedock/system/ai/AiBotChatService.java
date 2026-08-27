@@ -1,6 +1,6 @@
 package com.bluedock.system.ai;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.ai.OpenAiChatException;
 import com.bluedock.common.ai.OpenAiCompatibleChatClient;
 import com.bluedock.system.service.AiBotSettingService;

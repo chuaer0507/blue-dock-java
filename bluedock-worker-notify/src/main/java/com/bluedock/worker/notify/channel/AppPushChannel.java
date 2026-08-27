@@ -1,6 +1,6 @@
 package com.bluedock.worker.notify.channel;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.notify.NotifySendEvent;
 import com.bluedock.common.notify.NotifySettingNames;
 import com.bluedock.common.notify.apppush.AppPushClient;

@@ -1,6 +1,6 @@
 package com.bluedock.worker.notify.export;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.bluedock.common.export.ExportRunEvent;
 import com.bluedock.common.kafka.ConsumerGroups;
 import com.bluedock.common.kafka.KafkaTopics;
